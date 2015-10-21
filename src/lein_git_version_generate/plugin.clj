@@ -1,4 +1,4 @@
-(ns lein-git-version.plugin
+(ns lein-git-version-generate.plugin
   (:require [robert.hooke])
   (:use
    clojure.pprint
