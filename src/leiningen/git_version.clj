@@ -10,24 +10,23 @@
   (:use
    [clojure.java.shell :only [sh]]))
 
+(defn shcall [& args]
+  (let [{exit :exit out :out err :err} (apply sh args)
+        exitcode (clojure.string/trim (str exit))]
+    (when-not (= "0" exitcode) (println "lein-git-version plugin: sh call " args " exit code " exitcode " error " err))
+    (apply str (rest (clojure.string/trim out)))))
+
 (defn get-git-version
   []
-  (apply str (rest (clojure.string/trim
-                    (:out (sh
-                           "git" "describe" "--match" "v*.*"
-                           "--abbrev=4" "--dirty=**DIRTY**"))))))
+  (shcall "git" "describe" "--match" "v*.*" "--abbrev=4" "--dirty=**DIRTY**"))
 
 (defn get-git-ref
   []
-  (apply str (clojure.string/trim
-                    (:out (sh
-                           "git" "rev-parse" "--verify" "HEAD")))))
+  (shcall "git" "rev-parse" "--verify" "HEAD"))
 
 (defn get-git-status
   []
-  (apply str (clojure.string/trim
-                    (:out (sh
-                           "git" "status" "--porcelain")))))
+  (shcall "git" "status" "--porcelain"))
 
 ;(defn git-version
 ;  "Show project version, as tagged in git."
