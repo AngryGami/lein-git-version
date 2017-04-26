@@ -14,7 +14,7 @@
   (let [{exit :exit out :out err :err} (apply sh args)
         exitcode (clojure.string/trim (str exit))]
     (when-not (= "0" exitcode) (println "lein-git-version plugin: sh call " args " exit code " exitcode " error " err))
-    (apply str (rest (clojure.string/trim out)))))
+    (apply str (clojure.string/trim out))))
 
 (defn get-git-version
   []
